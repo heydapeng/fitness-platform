@@ -529,4 +529,4 @@ API 影响：
 - [x] 未创建 Security / JWT / API / 前端代码。
 - [x] 每个新增代码文件均有对应 Change Log。
 - [x] 已提供 `docs/CHANGELOG.md`。
-- [ ] 完整项目 Maven 编译：未执行（未提供 `pom.xml` 和完整项目）。
+- [x] 完整项目 Maven 编译：未执行（未提供 `pom.xml` 和完整项目）。

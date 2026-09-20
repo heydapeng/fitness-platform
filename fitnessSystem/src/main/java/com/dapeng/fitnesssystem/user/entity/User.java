@@ -44,7 +44,7 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    protected User() {
+    public User() {
     }
 
     public Long getId() {
