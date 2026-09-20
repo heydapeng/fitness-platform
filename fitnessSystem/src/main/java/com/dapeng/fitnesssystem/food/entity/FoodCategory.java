@@ -1,6 +1,8 @@
-package com.dapeng.fitnesssystem.entity.food;
+package com.dapeng.fitnesssystem.food.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
@@ -20,9 +22,12 @@ public class FoodCategory {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
+
+
     @Column(name = "sort_order", nullable = false)
     private Integer sortOrder;
 
+    @JdbcTypeCode(SqlTypes.TINYINT)
     @Column(name = "status", nullable = false)
     private Integer status;
 

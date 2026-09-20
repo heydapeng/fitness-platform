@@ -1,6 +1,8 @@
-package com.dapeng.fitnesssystem.entity.food;
+package com.dapeng.fitnesssystem.food.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -52,6 +54,7 @@ public class Food {
     @Column(name = "description", length = 500)
     private String description;
 
+    @JdbcTypeCode(SqlTypes.TINYINT)
     @Column(name = "status", nullable = false)
     private Integer status;
 

@@ -1,6 +1,8 @@
-package com.dapeng.fitnesssystem.entity.user;
+package com.dapeng.fitnesssystem.user.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +34,7 @@ public class User {
     @Column(name = "role", nullable = false, length = 20)
     private UserRole role;
 
+    @JdbcTypeCode(SqlTypes.TINYINT)
     @Column(name = "status", nullable = false)
     private Integer status;
 

@@ -1,4 +1,4 @@
-package com.dapeng.fitnesssystem.entity.user;
+package com.dapeng.fitnesssystem.user.entity;
 
 /**
  * User role values persisted in users.role.

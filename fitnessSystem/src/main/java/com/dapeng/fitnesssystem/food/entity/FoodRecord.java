@@ -1,6 +1,6 @@
-package com.dapeng.fitnesssystem.entity.food;
+package com.dapeng.fitnesssystem.food.entity;
 
-import com.dapeng.fitnesssystem.entity.user.User;
+import com.dapeng.fitnesssystem.user.entity.User;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
