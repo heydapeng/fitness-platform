@@ -1,8 +1,0 @@
-com\dapeng\fitnesssystem\entity\food\FoodCategory.class
-com\dapeng\fitnesssystem\entity\food\MealType.class
-com\dapeng\fitnesssystem\entity\food\Food.class
-com\dapeng\fitnesssystem\FitnessSystemApplication.class
-com\dapeng\fitnesssystem\entity\user\UserRole.class
-com\dapeng\fitnesssystem\entity\nutrition\NutritionGoal.class
-com\dapeng\fitnesssystem\entity\food\FoodRecord.class
-com\dapeng\fitnesssystem\entity\user\User.class
