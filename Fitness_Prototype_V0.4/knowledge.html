@@ -1,0 +1,18 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>健身指南 · Fitness</title><link rel="icon" href="assets/img/logo.svg"><link rel="stylesheet" href="assets/css/styles.css"></head>
+<body class="product-page"><div class="app">
+<header class="member-header"><div class="member-nav"><a class="marketing-brand member-brand" href="index.html?view=member"><span class="brand-mark">F</span><span>Fitness</span></a><nav class="member-links"><a href="index.html?view=member">今天</a><a href="nutrition.html">饮食</a><a href="training.html">训练</a><a href="calendar.html">日历</a><a href="analytics.html">分析</a><a href="assistant.html">AI 助手</a><a class="active" href="knowledge.html">指南</a></nav><div class="member-actions"><button class="member-ai-pill" onclick="location.href='assistant.html'">✦ 问 AI</button><button class="member-avatar" onclick="toggleProfileMenu()">W</button><div id="profileMenu" class="profile-menu"><strong>王同学</strong><small>普通健身记录者</small><button onclick="prototypeLogout()">退出登录</button></div></div></div></header>
+<main class="product-main">
+<section class="product-hero"><div class="product-hero-copy"><span class="product-overline">FITNESS GUIDE</span><h1>想查动作、营养和训练知识，直接搜。</h1><p>指南内容和个人记录分开。这里负责解释“怎么理解、怎么做”，你的真实摄入和训练数据仍然来自自己的记录。</p><div class="guide-tabs" style="margin-top:20px"><button class="guide-tab active">全部</button><button class="guide-tab">训练</button><button class="guide-tab">动作</button><button class="guide-tab">营养</button></div></div><div class="product-hero-visual"><div class="knowledge-hero-search"><input id="knowledgeSearch" placeholder="搜索 RIR、蛋白质、卧推……"><button onclick="filterKnowledge()">搜索</button></div></div></section>
+
+<div class="guide-source-note"><b>有来源的知识：</b><span>指南内容会显示主题和来源状态；没有足够依据时，AI 应该明确说不知道，而不是硬猜。</span></div>
+<div class="product-section-head"><div><span class="product-kicker">KNOWLEDGE</span><h2>推荐指南</h2><p>从你常用的训练和饮食主题开始。</p></div></div>
+<section class="knowledge-grid" id="knowledgeGrid">
+<div class="knowledge-card" data-k="RIR RPE 训练 强度"><span class="pill purple">训练基础</span><h3>RIR 与 RPE 怎么理解？</h3><p>用“还剩几次能完成”的方式理解训练接近力竭的程度，并说明常见的 RIR / RPE 对照关系。</p><span class="source">训练强度基础知识 · 已审核</span></div>
+<div class="knowledge-card" data-k="蛋白质 营养 增肌 减脂"><span class="pill green">营养基础</span><h3>蛋白质在健身饮食中的作用</h3><p>介绍蛋白质与肌肉蛋白合成、饱腹感及总饮食结构之间的关系，不把建议伪装成个人医学结论。</p><span class="source">营养基础指南 · 已审核</span></div>
+<div class="knowledge-card" data-k="卧推 动作 胸 肩 技术"><span class="pill blue">动作指南</span><h3>Bench Press 动作指南</h3><p>卧推的基础动作步骤、主要肌群、常见错误和注意事项，方便训练前快速查阅。</p><span class="source">动作指南 v3 · 已审核</span></div>
+<div class="knowledge-card" data-k="碳水 训练前 训练后 饮食"><span class="pill orange">营养策略</span><h3>训练前后的碳水怎么理解？</h3><p>解释碳水在训练能量供应中的角色，并提醒总摄入和个人耐受等背景因素。</p><span class="source">运动营养概览 · 已审核</span></div>
+<div class="knowledge-card" data-k="渐进超负荷 增肌 训练 计划"><span class="pill purple">训练基础</span><h3>什么是渐进超负荷？</h3><p>从重量、次数、组数和动作质量等多个维度解释，而不是只理解成“每次都要加重量”。</p><span class="source">力量训练基础 · 已审核</span></div>
+<div class="knowledge-card" data-k="食品 食物 数据库 知识"><span class="pill green">饮食知识</span><h3>怎么理解一种食物的营养价值？</h3><p>食品记录负责提供热量和宏量营养；指南负责解释食物特点、适用场景和常见搭配。</p><span class="source">平台营养指南 · 已审核</span></div>
+</section>
+</main><footer class="product-footer"><span>Fitness · Knowledge with context.</span><a href="assistant.html">让 AI 帮我解释 →</a></footer>
+<script src="assets/js/data.js"></script><script src="assets/js/app.js"></script><script src="assets/js/pages.js"></script></div></body></html>

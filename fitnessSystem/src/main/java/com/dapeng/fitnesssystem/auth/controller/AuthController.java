@@ -26,6 +26,7 @@ public class AuthController {
     public Result login(@Valid @RequestBody LoginRequest loginRequest){
         //先不搞token
         authService.login(loginRequest);
+        return null;
 
 
 

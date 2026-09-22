@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#050914">
+  <title>Fitness · 记录吃与练</title>
+  <link rel="icon" href="assets/img/logo.svg">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="auth-loading">
+<div class="app">
+
+<!-- ============================ GUEST / MARKETING HOME ============================ -->
+<div id="guestHome" class="guest-shell" hidden>
+  <header class="marketing-header">
+    <div class="marketing-nav">
+      <a class="marketing-brand" href="#top" aria-label="Fitness 首页">
+        <span class="brand-mark">F</span><span>Fitness</span>
+      </a>
+      <nav class="marketing-links">
+        <a href="#record">记录</a>
+        <a href="#plan">训练计划</a>
+        <a href="#insight">数据分析</a>
+        <a href="#ai">AI 助手</a>
+        <a href="knowledge.html">健身指南</a>
+      </nav>
+      <div class="marketing-actions">
+        <button class="text-button" onclick="openAuth('login')">登录</button>
+        <button class="btn electric" onclick="openAuth('register')">免费开始</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="landing-hero">
+      <div class="hero-orb orb-a"></div><div class="hero-orb orb-b"></div>
+      <div class="hero-grid-lines"></div>
+      <div class="landing-hero-inner">
+        <div class="landing-copy reveal visible">
+          <span class="landing-kicker"><span></span> EAT · TRAIN · REVIEW</span>
+          <h1>把每天吃过的、练过的，<br><em>变成看得见的进步。</em></h1>
+          <p>一个给普通健身者使用的记录工具。饮食、训练计划和实际执行各自独立，想记多少由你决定；系统只负责把事实整理清楚。</p>
+          <div class="landing-actions">
+            <button class="btn electric hero-btn" onclick="openAuth('register')">开始记录 <span>→</span></button>
+            <a class="btn glass hero-btn" href="#record">看看能做什么</a>
+          </div>
+          <div class="landing-trust">
+            <div><strong>可选目标</strong><span>不设目标也能记录</span></div>
+            <div><strong>完整数据</strong><span>条件查询与导出</span></div>
+            <div><strong>AI 辅助</strong><span>确认后才执行写操作</span></div>
+          </div>
+        </div>
+
+        <div class="landing-figure reveal visible" aria-label="产品视觉展示">
+          <div class="figure-glow"></div>
+          <svg class="athlete-art" viewBox="0 0 620 680" role="img" aria-label="抽象健身人物">
+            <defs>
+              <linearGradient id="bodyGlow" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#2c72ff"/><stop offset=".48" stop-color="#071b61"/><stop offset="1" stop-color="#030611"/>
+              </linearGradient>
+              <filter id="soft"><feGaussianBlur stdDeviation="13"/></filter>
+            </defs>
+            <ellipse cx="340" cy="630" rx="205" ry="28" fill="#0a1d63" opacity=".7" filter="url(#soft)"/>
+            <circle cx="347" cy="142" r="77" fill="url(#bodyGlow)"/>
+            <path d="M280 210 C246 241 225 292 218 357 L198 553 C194 596 226 623 269 622 L426 622 C470 622 500 589 493 545 L472 356 C464 289 440 242 408 211 C371 238 318 237 280 210Z" fill="url(#bodyGlow)"/>
+            <path d="M224 305 C153 325 112 370 90 438 L132 455 C160 400 190 374 227 365Z" fill="#07133e"/>
+            <path d="M468 304 C536 326 574 370 595 436 L554 454 C527 402 502 377 468 365Z" fill="#06123b"/>
+            <path d="M262 246 C290 267 326 277 347 277 C371 277 405 267 431 246" fill="none" stroke="#4386ff" stroke-width="4" opacity=".45"/>
+            <path d="M257 365 C304 348 393 348 440 365" fill="none" stroke="#1d56de" stroke-width="5" opacity=".38"/>
+          </svg>
+          <div class="float-data f-cal"><span class="tiny-icon">↗</span><div><strong>7 天趋势</strong><small>数据清楚，不替你判断</small></div></div>
+          <div class="float-data f-food"><span class="tiny-icon">P</span><div><strong>142g</strong><small>今日蛋白质</small></div></div>
+          <div class="float-data f-work"><span class="tiny-icon">✓</span><div><strong>Push Day</strong><small>今天的训练计划</small></div></div>
+        </div>
+      </div>
+      <a href="#record" class="scroll-cue"><span>向下了解</span><i>↓</i></a>
+    </section>
+
+    <section id="record" class="feature-story feature-light">
+      <div class="feature-story-inner">
+        <div class="feature-copy reveal">
+          <span class="story-no">01 / RECORD</span>
+          <h2>今天吃了什么，<br>用最少的操作记下来。</h2>
+          <p>搜索本地食品库，找不到再从第三方食品源补充。热量、蛋白质、碳水、脂肪自动计算；照片只是这一餐的记录，不强迫 AI 猜食物。</p>
+          <ul class="feature-points">
+            <li><span>01</span>目标完全可选，没有目标照样记录</li>
+            <li><span>02</span>食品模糊搜索，候选由用户二次确认</li>
+            <li><span>03</span>每一条历史记录保存当时营养快照</li>
+          </ul>
+        </div>
+        <div class="showcase-wrap reveal">
+          <div class="phone-card phone-food">
+            <div class="phone-top"><span>今天 · 12:35</span><span>＋</span></div>
+            <div class="meal-photo-art"><span>午餐</span><div class="plate-art"><i></i><i></i><i></i></div></div>
+            <div class="phone-title">米饭 + 鸡胸肉</div>
+            <div class="phone-sub">250g + 180g · 690 kcal</div>
+            <div class="macro-strip"><b>P 62g</b><b>C 81g</b><b>F 10g</b></div>
+            <div class="phone-list-row"><span>今日累计</span><strong>1,860 / 2,300 kcal</strong></div>
+          </div>
+          <div class="showcase-note note-one"><b>不是“识别一张图”</b><span>而是把用户真正输入的事实记录准确。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="plan" class="feature-story feature-dark">
+      <div class="feature-story-inner reverse">
+        <div class="calendar-stage reveal">
+          <div class="calendar-mock">
+            <div class="calendar-title"><div><small>SEPTEMBER</small><strong>训练像课表一样清楚</strong></div><span>2026</span></div>
+            <div class="week-labels"><b>M</b><b>T</b><b>W</b><b>T</b><b>F</b><b>S</b><b>S</b></div>
+            <div class="landing-calendar-grid">
+              <span></span><span>1</span><span>2</span><span class="event-day run">3<i>RUN</i></span><span>4</span><span class="event-day push">5<i>PUSH</i></span><span>6</span>
+              <span class="event-day pull">7<i>PULL</i></span><span>8</span><span class="event-day legs">9<i>LEGS</i></span><span>10</span><span>11</span><span class="event-day push">12<i>PUSH</i></span><span>13</span>
+              <span>14</span><span class="event-day run">15<i>RUN</i></span><span>16</span><span class="event-day pull">17<i>PULL</i></span><span>18</span><span>19</span><span class="event-day legs">20<i>LEGS</i></span>
+              <span>21</span><span class="event-day today">22<i>TODAY</i></span><span>23</span><span class="event-day push">24<i>PUSH</i></span><span>25</span><span>26</span><span class="event-day run">27<i>RUN</i></span>
+              <span>28</span><span>29</span><span>30</span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+        <div class="feature-copy dark-copy reveal">
+          <span class="story-no">02 / PLAN</span>
+          <h2>不是只有“每周七天”，<br>你的循环由你决定。</h2>
+          <p>3 练 1 休、3 练 2 休，9 天循环也可以。多个训练子计划可以同时存在，日历负责把力量、有氧、恢复安排合并展示。</p>
+          <div class="dark-stat-row"><div><strong>9</strong><span>天自定义循环</span></div><div><strong>∞</strong><span>多个子计划</span></div><div><strong>0</strong><span>自动顺延</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="insight" class="feature-story feature-blue-white">
+      <div class="feature-story-inner">
+        <div class="feature-copy reveal">
+          <span class="story-no">03 / INSIGHT</span>
+          <h2>不堆数据，<br>把趋势画给你看。</h2>
+          <p>首页只看当天。真正想复盘时再进入分析页面，按日期、食品、训练计划、动作等条件查询，并把同样的查询结果直接导出。</p>
+          <div class="query-tags"><span>最近 30 天</span><span>蛋白质</span><span>卧推</span><span>按周</span><span>导出 CSV</span></div>
+        </div>
+        <div class="analytics-showcase reveal">
+          <div class="analytics-head"><div><small>最近 7 天</small><strong>每日热量趋势</strong></div><span class="trend-up">稳定记录 7 天</span></div>
+          <svg viewBox="0 0 700 310" class="marketing-chart" aria-label="示例趋势图">
+            <defs><linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d6fff" stop-opacity=".32"/><stop offset="1" stop-color="#2d6fff" stop-opacity="0"/></linearGradient></defs>
+            <g stroke="#dfe6f2" stroke-width="1"><line x1="45" y1="50" x2="675" y2="50"/><line x1="45" y1="115" x2="675" y2="115"/><line x1="45" y1="180" x2="675" y2="180"/><line x1="45" y1="245" x2="675" y2="245"/></g>
+            <line x1="45" y1="94" x2="675" y2="94" stroke="#1fa971" stroke-width="2" stroke-dasharray="8 8" opacity=".7"/>
+            <path d="M45 150 L150 119 L255 178 L360 76 L465 126 L570 158 L675 210 L675 260 L45 260 Z" fill="url(#chartFill)"/>
+            <path d="M45 150 L150 119 L255 178 L360 76 L465 126 L570 158 L675 210" fill="none" stroke="#245fee" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <g fill="#245fee" stroke="#fff" stroke-width="4"><circle cx="45" cy="150" r="7"/><circle cx="150" cy="119" r="7"/><circle cx="255" cy="178" r="7"/><circle cx="360" cy="76" r="7"/><circle cx="465" cy="126" r="7"/><circle cx="570" cy="158" r="7"/><circle cx="675" cy="210" r="8"/></g>
+            <g fill="#7c879b" font-size="16" font-family="Arial"><text x="28" y="292">16</text><text x="133" y="292">17</text><text x="238" y="292">18</text><text x="343" y="292">19</text><text x="448" y="292">20</text><text x="553" y="292">21</text><text x="658" y="292">22</text></g>
+          </svg>
+          <div class="analytics-footer"><span><i class="dot blue"></i>实际摄入</span><span><i class="dot green"></i>目标线</span><strong>本周均值 2,131 kcal</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ai" class="feature-story feature-ai">
+      <div class="ai-glow"></div>
+      <div class="feature-story-inner reverse">
+        <div class="ai-demo reveal">
+          <div class="ai-bubble user-bubble">刚吃了 200g 鸡胸肉和 150g 米饭，帮我记一下。</div>
+          <div class="ai-bubble system-bubble"><small>已匹配本地食品库</small><strong>准备记录</strong><div class="draft-food"><span>熟鸡胸肉 · 200g</span><b>330 kcal</b></div><div class="draft-food"><span>白米饭（熟）· 150g</span><b>195 kcal</b></div><div class="draft-total"><span>预计合计</span><strong>525 kcal · P 66 · C 42 · F 8</strong></div><div class="draft-actions"><button>编辑</button><button class="confirm">确认记录</button></div></div>
+        </div>
+        <div class="feature-copy dark-copy reveal">
+          <span class="story-no">04 / AI ASSISTANT</span>
+          <h2>AI 是更快的入口，<br>不是替你做决定的人。</h2>
+          <p>一句话可以查询数据、生成记录草稿、准备训练计划；真正修改业务数据前，都先给用户看清楚，再由正常业务 Service 执行。</p>
+          <div class="ai-flow"><span>理解</span><i>→</i><span>匹配</span><i>→</i><span>预览</span><i>→</i><b>你确认</b><i>→</i><span>保存</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="landing-cta">
+      <div class="landing-cta-inner reveal">
+        <span class="landing-kicker dark-kicker"><span></span> YOUR DATA, YOUR PACE</span>
+        <h2>从今天的一餐、一次训练开始。</h2>
+        <p>不用先制定完美计划，也不用先设置目标。先把真实发生的事情记录下来。</p>
+        <div class="landing-actions center"><button class="btn electric hero-btn" onclick="openAuth('register')">创建账号</button><button class="btn dark-outline hero-btn" onclick="openAuth('login')">已有账号，登录</button></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="marketing-footer"><div class="marketing-brand"><span class="brand-mark">F</span><span>Fitness</span></div><span>记录饮食 · 规划训练 · 看懂自己的数据</span><span>© 2026 Fitness Prototype</span></footer>
+</div>
+
+<!-- ============================ MEMBER / PERSONAL HOME ============================ -->
+<div id="memberHome" class="member-shell" hidden>
+  <header class="member-header">
+    <div class="member-nav">
+      <a class="marketing-brand member-brand" href="index.html"><span class="brand-mark">F</span><span>Fitness</span></a>
+      <nav class="member-links"><a class="active" href="index.html">今天</a><a href="nutrition.html">饮食</a><a href="training.html">训练</a><a href="calendar.html">日历</a><a href="analytics.html">分析</a><a href="assistant.html">AI 助手</a><a href="knowledge.html">指南</a></nav>
+      <div class="member-actions"><button class="member-ai-pill" onclick="location.href='assistant.html'">✦ 问 AI</button><button class="member-avatar" onclick="toggleProfileMenu()">W</button><div id="profileMenu" class="profile-menu"><strong>王同学</strong><small>普通健身记录者</small><button onclick="prototypeLogout()">退出登录</button></div></div>
+    </div>
+  </header>
+
+  <main class="member-main">
+    <section class="member-hero">
+      <div class="member-hero-bg"></div>
+      <div class="member-hero-top"><div><span class="member-date">2026 年 9 月 22 日 · 星期二</span><h1>下午好，王同学。</h1><p>今天已经记录 4 餐，训练计划是 Push Day。</p></div><div class="member-quick"><button onclick="openModal('foodModal')">＋ 记录饮食</button><a href="training.html">开始训练</a></div></div>
+
+      <div class="member-metrics">
+        <div class="calorie-hero-card">
+          <div class="big-ring" style="--p:81"><div class="big-ring-core"><span>今日摄入</span><strong>1,860</strong><small>/ 2,300 kcal</small></div></div>
+          <div class="calorie-copy"><span class="metric-overline">ENERGY</span><h2>还差 440 kcal</h2><p>目标只是比较基准。即使没有设置目标，今天的真实摄入仍然会正常统计。</p><a href="nutrition.html">查看饮食详情 →</a></div>
+        </div>
+        <div class="macro-rings">
+          <div class="mini-ring-card"><div class="mini-ring protein-ring" style="--p:89"><div><b>P</b><strong>142g</strong></div></div><span>蛋白质</span><small>18g remaining</small></div>
+          <div class="mini-ring-card"><div class="mini-ring carb-ring" style="--p:79"><div><b>C</b><strong>205g</strong></div></div><span>碳水</span><small>55g remaining</small></div>
+          <div class="mini-ring-card"><div class="mini-ring fat-ring" style="--p:87"><div><b>F</b><strong>61g</strong></div></div><span>脂肪</span><small>9g remaining</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="member-dashboard-grid">
+      <div class="member-card trend-card wide-card">
+        <div class="member-card-head"><div><span class="metric-overline dark">7 DAY REVIEW</span><h2>最近一周摄入趋势</h2><p>目标线与真实记录分开显示。</p></div><div class="segmented"><button class="active" onclick="switchTrend(this,'7d')">7 天</button><button onclick="switchTrend(this,'30d')">30 天</button></div></div>
+        <svg id="memberTrendChart" viewBox="0 0 900 310" class="member-chart" aria-label="最近一周热量趋势">
+          <defs><linearGradient id="memberArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#326bff" stop-opacity=".24"/><stop offset="1" stop-color="#326bff" stop-opacity="0"/></linearGradient></defs>
+          <g class="chart-grid" stroke="#edf0f6" stroke-width="1"><line x1="58" y1="45" x2="865" y2="45"/><line x1="58" y1="105" x2="865" y2="105"/><line x1="58" y1="165" x2="865" y2="165"/><line x1="58" y1="225" x2="865" y2="225"/></g>
+          <g fill="#9aa3b2" font-size="13"><text x="12" y="50">2500</text><text x="12" y="110">2250</text><text x="12" y="170">2000</text><text x="12" y="230">1750</text></g>
+          <line x1="58" y1="93" x2="865" y2="93" stroke="#1fa971" stroke-width="2" stroke-dasharray="8 8"/>
+          <path id="memberAreaPath" d="M58 140 L192 110 L326 168 L460 72 L594 124 L728 153 L862 198 L862 255 L58 255 Z" fill="url(#memberArea)"/>
+          <path id="memberLinePath" d="M58 140 L192 110 L326 168 L460 72 L594 124 L728 153 L862 198" fill="none" stroke="#245fee" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          <g id="memberChartPoints" fill="#245fee" stroke="#fff" stroke-width="4"><circle cx="58" cy="140" r="7"/><circle cx="192" cy="110" r="7"/><circle cx="326" cy="168" r="7"/><circle cx="460" cy="72" r="7"/><circle cx="594" cy="124" r="7"/><circle cx="728" cy="153" r="7"/><circle cx="862" cy="198" r="8"/></g>
+          <g fill="#8c96a7" font-size="13"><text x="45" y="285">16</text><text x="179" y="285">17</text><text x="313" y="285">18</text><text x="447" y="285">19</text><text x="581" y="285">20</text><text x="715" y="285">21</text><text x="849" y="285">22</text></g>
+        </svg>
+        <div class="chart-summary"><div><span class="summary-dot blue"></span><b>2,131 kcal</b><small>7 天平均</small></div><div><span class="summary-dot green"></span><b>2,300 kcal</b><small>当前目标</small></div><div><span class="summary-dot dark"></span><b>7 / 7</b><small>有记录天数</small></div></div>
+      </div>
+
+      <div class="member-card training-today-card">
+        <div class="member-card-head"><div><span class="metric-overline dark">TODAY'S TRAINING</span><h2>Push Day</h2><p>PPL 9-Day · Cycle Day 1</p></div><div class="plan-badge">力量</div></div>
+        <div class="training-completion"><div class="training-donut"><span>0<small>/ 6</small></span></div><div><strong>今天还没开始</strong><p>计划不会自动顺延，是否执行由你决定。</p></div></div>
+        <div class="exercise-preview"><div><span>Bench Press</span><b>4 × 8</b></div><div><span>Incline DB Press</span><b>3 × 10</b></div><div><span>Lateral Raise</span><b>4 × 12</b></div></div>
+        <a class="member-primary-action" href="training.html">开始训练 <span>→</span></a>
+      </div>
+
+      <div class="member-card meal-card">
+        <div class="member-card-head"><div><span class="metric-overline dark">TODAY'S FOOD</span><h2>今天吃了什么</h2></div><a href="nutrition.html">全部记录</a></div>
+        <div id="memberMealList" class="member-meal-list"></div>
+      </div>
+
+      <div class="member-card weekly-training-card">
+        <div class="member-card-head"><div><span class="metric-overline dark">TRAINING LOAD</span><h2>最近 4 周训练</h2></div><a href="analytics.html">详细分析</a></div>
+        <div class="weekly-bars"><div><span style="--h:52%"></span><b>W1</b><small>3 次</small></div><div><span style="--h:82%"></span><b>W2</b><small>5 次</small></div><div><span style="--h:67%"></span><b>W3</b><small>4 次</small></div><div class="current"><span style="--h:64%"></span><b>本周</b><small>4 次</small></div></div>
+        <div class="weekly-note"><strong>16</strong><span>过去 4 周完成训练</span><strong>81%</strong><span>计划完成率</span></div>
+      </div>
+
+      <div class="member-card ai-home-card wide-card">
+        <div class="ai-home-icon">✦</div><div class="ai-home-copy"><span class="metric-overline dark">AI ASSISTANT</span><h2>直接说你想记录、查询或了解什么。</h2><p>AI 会调用系统已有能力。涉及写入时，先给你预览，确认以后才保存。</p></div><div class="member-ai-input"><input id="memberAiInput" placeholder="例如：我今天蛋白质还差多少？"><button onclick="memberAskAi()">发送</button></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="member-footer"><span>Fitness · Your data, your pace.</span><a href="analytics.html">导出我的数据 →</a></footer>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal auth-modal" id="authModal"><div class="auth-box"><button class="auth-close" onclick="closeModal('authModal')">×</button><div class="auth-logo"><span class="brand-mark">F</span></div><span class="metric-overline dark">WELCOME TO FITNESS</span><h2 id="authTitle">登录你的账号</h2><p id="authSub">继续查看今天的饮食、训练和趋势。</p><div class="auth-fields"><label>邮箱<input type="email" value="demo@fitness.app" placeholder="you@example.com"></label><label>密码<input type="password" value="12345678" placeholder="••••••••"></label></div><button class="auth-submit" onclick="prototypeLogin()" id="authSubmit">登录</button><button class="auth-demo" onclick="prototypeLogin()">使用演示数据进入</button><small class="auth-hint">这是静态产品原型，输入内容不会提交到服务器。</small></div></div>
+
+<!-- FOOD MODAL for member state -->
+<div class="modal" id="foodModal"><div class="modal-box"><div class="modal-head"><div><div class="kicker">QUICK LOG</div><h2>记录一餐</h2></div><button class="btn ghost" onclick="closeModal('foodModal')">关闭</button></div><div class="form-grid"><div class="field"><label>食品</label><select id="quickFood"><option>熟鸡胸肉</option><option>白米饭（熟）</option><option>全脂牛奶</option><option>香蕉</option></select></div><div class="field"><label>数量 / g</label><input id="quickAmount" type="number" value="100"></div><div class="field"><label>发生时间</label><input type="time" value="14:30"></div><div class="field"><label>餐次（可选）</label><select><option>未分餐</option><option>早餐</option><option>午餐</option><option>晚餐</option><option>加餐</option></select></div></div><div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px"><button class="btn ghost" onclick="closeModal('foodModal')">取消</button><button class="btn accent" onclick="fakeSaveFood()">保存记录</button></div></div></div>
+</div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/pages.js"></script>
+</body>
+</html>
