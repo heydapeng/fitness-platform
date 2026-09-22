@@ -1,6 +1,9 @@
 package com.dapeng.fitnesssystem.auth.service;
+import com.dapeng.fitnesssystem.auth.dto.LoginRequest;
+import com.dapeng.fitnesssystem.auth.dto.LoginResponse;
 import com.dapeng.fitnesssystem.auth.dto.RegisterRequest;
 import com.dapeng.fitnesssystem.auth.dto.RegisterResponse;
+import com.dapeng.fitnesssystem.common.Result;
 import com.dapeng.fitnesssystem.user.entity.User;
 import com.dapeng.fitnesssystem.user.entity.UserRole;
 import com.dapeng.fitnesssystem.user.repository.UserRepository;
@@ -63,5 +66,21 @@ public class AuthService {
                 savedUser.getNickname(),
                 savedUser.getTimezone()
         );
+    }
+
+    public LoginResponse login(LoginRequest loginRequest) {
+        String email = loginRequest.email();
+        String password = loginRequest.password();
+        if(email == null || password == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"请输入邮箱或密码");
+        }
+        boolean b = userRepository.existsByEmail(email);
+        if(!b){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"输入的邮箱用户未注册");
+        }
+        password = passwordEncoder.encode(password);
+
+
+
     }
 }

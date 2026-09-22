@@ -1,5 +1,5 @@
 package com.dapeng.fitnesssystem.auth.controller;
-
+import com.dapeng.fitnesssystem.auth.dto.LoginRequest;
 import com.dapeng.fitnesssystem.auth.dto.RegisterRequest;
 import com.dapeng.fitnesssystem.auth.dto.RegisterResponse;
 import com.dapeng.fitnesssystem.auth.service.AuthService;
@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -21,6 +20,17 @@ public class AuthController {
     public Result register(@Valid @RequestBody RegisterRequest registerRequest) {
         RegisterResponse register = authService.register(registerRequest);
         return Result.success(register);
+    }
+    @PutMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public Result login(@Valid @RequestBody LoginRequest loginRequest){
+        //先不搞token
+        authService.login(loginRequest);
+
+
+
+
+
     }
 
 
