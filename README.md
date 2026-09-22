@@ -1,221 +1,746 @@
-# Fitness Nutrition Platform
+# 健迹 FitTrace
 
-> 面向健身用户的“一站式吃、练、记、看、问、教”平台。
+**中文全称：健迹 Fitness Platform**
+**AI 助手：小迹 / Tracey**
+**品牌口号：吃练有数，进步有迹**
 
-## 项目简介
+> 当前阶段目标：任何开发者按照本 README，可以在干净环境中完成项目的构建、测试和启动。
+> M0 阶段只建立工程基线，不新增业务功能。
 
-Fitness Nutrition Platform 旨在为健身用户建立完整的数据与协作闭环：
+------
 
-- **吃**：饮食记录、营养目标、食品库、宏量营养素统计；
-- **练**：动作库、训练计划、训练 Session、逐组记录、训练统计；
-- **记**：体重、体脂、围度、身体进度照片；
-- **看**：Dashboard、历史记录、趋势图、PR、训练容量；
-- **问**：AI Chat、语音输入、RAG 知识问答、只读业务 Tool；
-- **教**：真人教练协同、授权访问、计划下发、反馈与 AI 辅助审核。
+## 1. 技术栈
 
-平台最终希望形成两种并行操作方式：
+### 后端
 
-1. **传统业务页面**：用户可手动查看、录入、修改和校对饮食、身体、训练等数据；
-2. **AI 统一入口**：用户可在首页直接通过文字、语音、文件表达需求，由 AI 理解意图并调用系统已有业务能力完成查询、记录、计划制定、数据导入和导出。
+- Java 21
+- Spring Boot 3.x
+- Maven Wrapper
+- MySQL 8
+- Redis 7+
+- Flyway
 
-## 核心原则
+### 前端
 
-1. 用户数据首先是确定性的业务事实，AI 不能替代底层业务系统。
-2. 初期先建立可靠的数据模型和手动操作闭环，再逐步引入 AI。
-3. AI 最终不是“聊天装饰层”，而是系统业务能力的自然语言入口。
-4. AI 产生的写操作必须调用已有 Service/API/Tool，不能绕过业务规则直接写数据库。
-5. 涉及歧义、高影响或批量写入的操作必须预览、确认、可取消、可追踪。
-6. 用户拥有自己的数据，可按时间范围导出关键数据和关联图片。
-7. 外部历史数据导入采用“AI 解析 + 结构化映射 + 用户预览确认 + 正式导入”的流程。
+- Node.js
+- npm
+- TypeScript
+- Vite
+- Vitest
 
-## 版本路线
+### 本地基础设施
 
-| 版本 | 核心主题             | 主要用户价值                           | 关键新增能力                                                 |
-| ---- | -------------------- | -------------------------------------- | ------------------------------------------------------------ |
-| V1   | 饮食记录 MVP         | 知道今天吃了多少、还差多少             | 账户、营养目标、食品库、饮食记录、当日汇总、历史             |
-| V1.1 | 快速记录             | 高频记录更快                           | 最近、常吃、收藏、复制、自定义食品、多食品录入               |
-| V1.2 | 记录媒体与数据导出   | 留下更完整的饮食记忆，并掌握自己的数据 | 饮食图片、附件管理、关键数据导出、图片打包导出               |
-| V1.5 | 身体数据             | 把饮食与身体变化关联                   | 体重、体脂、围度、身体进度图、趋势、BMI/BMR/TDEE             |
-| V2   | 训练闭环             | 记录并执行一次完整训练                 | 动作库、用户自定义训练计划、训练 Session、组记录             |
-| V2.5 | 训练统计             | 看懂训练进展                           | PR、训练容量、频率、周/月趋势、肌群统计                      |
-| V3   | 真人教练             | 教练与学员线上协同                     | 绑定、授权、计划、反馈、消息、预约                           |
-| V4   | AI Chat + Read Tools | 用自然语言查询真实业务数据             | 首页 AI 入口、文字/语音输入、只读 Tool、Memory、SSE          |
-| V4.5 | RAG 知识增强         | AI 回答有可靠知识依据                  | 知识库、检索、Query Rewrite、Rerank、引用                    |
-| V5   | Fitness Agent        | 用自然语言完成真实业务任务             | Structured Output、写 Tool、AI 记录、AI 计划、AI 导入/导出、确认、幂等、Trace |
-| V6   | AI + 真人教练协同    | AI 辅助教练提高服务效率                | AI 摘要、建议草稿、风险提示、教练审核后下发                  |
+- Docker
+- Docker Compose
 
-## 版本依赖关系
+------
 
-```text
-V1 饮食数据底座
- ├── V1.1 快速记录
- ├── V1.2 图片与数据导出
- └── V1.5 身体数据
-      └── V2 训练闭环
-           └── V2.5 训练统计
+## 2. 前置要求
 
-V1.5 + V2/V2.5
- └── V3 真人教练
+开始前请确认本机已安装以下工具：
 
-稳定业务 API / Service
- └── V4 首页 AI + Read Tools + Voice Input
-      └── V4.5 RAG
-           └── V5 Fitness Agent
-                ├── 自然语言记录
-                ├── AI 制定/修改训练计划
-                ├── AI 历史数据导入
-                ├── AI 触发数据导出
-                └── V6 AI + Coach
+| 工具           | 要求                           | 检查命令                 |
+| -------------- | ------------------------------ | ------------------------ |
+| JDK            | Java 21                        | `java -version`          |
+| Git            | 近期版本                       | `git --version`          |
+| Docker         | 支持 Docker Compose v2         | `docker --version`       |
+| Docker Compose | v2                             | `docker compose version` |
+| Node.js        | 以项目 `package.json` 要求为准 | `node --version`         |
+| npm            | 与 Node.js 配套版本            | `npm --version`          |
+
+后端**不要求全局安装 Maven**。
+
+项目使用 Maven Wrapper：
+
+- Linux / macOS：`./mvnw`
+- Windows PowerShell：`.\mvnw.cmd`
+
+MySQL 和 Redis 后续由 Docker Compose 提供，本机无需单独安装。
+
+------
+
+## 3. 克隆项目
+
+```bash
+git clone https://github.com/heydapeng/fitness-platform.git
+cd fitness-platform
 ```
 
-## 最终首页形态
+------
 
-V5 之后，Dashboard 首页的第一交互入口不再只是“添加饮食”按钮，而是一个固定可见的 AI 输入区。
+## 4. 后端环境
 
-用户可：
+后端目录：
 
-- 直接输入文字；
-- 点击麦克风进行语音转文字；
-- 上传文件或图片；
-- 从推荐提示词快速发起任务。
+```text
+fitnessSystem/
+```
 
-典型输入：
+进入后端目录：
 
-- “中午吃了 300g 米饭、200g 鸡胸和两个鸡蛋，帮我记一下。”
-- “今天早上体重 72.4kg，体脂 18.2%。”
-- “给我安排一个每周四练的增肌计划，我只能去健身房周一二四六。”
-- “把周三的腿训练改到周四。”
-- “把我最近三个月体重、围度、每日摄入和饮食照片导出来。”
-- “这是我以前记录饮食的 Excel/截图，帮我导入系统。”
+### Linux / macOS
 
-AI 必须把这些自然语言转换成已有系统业务操作，并在需要时要求用户确认。
+```bash
+cd fitnessSystem
+```
 
-## 文档导航
+### Windows PowerShell
 
-本仓库按真实产品演进阶段拆分 PRD。每份文档只描述当前版本要解决的问题、页面与交互、功能规则、异常场景、验收标准和少量必须影响产品行为的技术约束。
+```powershell
+Set-Location .\fitnessSystem
+```
 
-| 文件                                | 版本 | 主题                                            |
-| ----------------------------------- | ---- | ----------------------------------------------- |
-| `00_版本总览.md`                    | 总览 | 产品愿景、版本路线、依赖关系、导入导出总体边界  |
-| `01_PRD_V1_饮食记录MVP.md`          | V1   | 饮食记录 MVP                                    |
-| `02_PRD_V1.1_快速记录.md`           | V1.1 | 最近、常吃、收藏、复制、自定义食品、多食品录入  |
-| `03_PRD_V1.2_记录媒体与数据导出.md` | V1.2 | 饮食图片、附件管理、数据导出、图片打包          |
-| `04_PRD_V1.5_身体数据.md`           | V1.5 | 身体测量、趋势、BMI/BMR/TDEE、身体进度照片      |
-| `05_PRD_V2_训练闭环.md`             | V2   | 动作库、训练计划、训练 Session、组记录          |
-| `06_PRD_V2.5_训练统计.md`           | V2.5 | PR、容量、频率、肌群统计、训练日历              |
-| `07_PRD_V3_真人教练.md`             | V3   | 教练绑定、授权、计划、反馈、消息、预约          |
-| `08_PRD_V4_AI_Chat与只读Tool.md`    | V4   | 首页 AI、语音输入、只读业务 Tool、SSE、Memory   |
-| `09_PRD_V4.5_RAG知识增强.md`        | V4.5 | 知识库、检索、Query Rewrite、Rerank、引用       |
-| `10_PRD_V5_Fitness_Agent.md`        | V5   | 统一首页 Agent、写 Tool、AI 记录/计划/导入/导出 |
-| `11_PRD_V6_AI与真人教练协同.md`     | V6   | AI 摘要、建议草稿、教练审核、Human-in-the-loop  |
+------
 
-## 推荐阅读顺序
+## 5. Java 与 Maven Wrapper
 
-开发某个版本时，只需要阅读：
+### 5.1 检查 Java
 
-- 本 README / 版本总览；
-- 当前版本 PRD；
-- 当前版本依赖的前置 PRD。
+```bash
+java -version
+```
+
+要求使用 Java 21。
+
+示例：
+
+```text
+java version "21.x.x"
+```
+
+或者：
+
+```text
+openjdk version "21.x.x"
+```
+
+### 5.2 检查 Maven Wrapper
+
+Linux / macOS：
+
+```bash
+./mvnw --version
+```
+
+Windows PowerShell：
+
+```powershell
+.\mvnw.cmd --version
+```
+
+当前工程基线使用：
+
+```text
+Apache Maven 3.9.16
+Java 21
+```
+
+Maven Wrapper 会自动下载项目指定的 Maven 版本，因此无需在开发机上单独安装 Maven。
+
+Maven 下载内容位于开发者自己的 Maven 本地仓库，例如：
+
+```text
+C:\Users\<username>\.m2
+```
+
+或：
+
+```text
+~/.m2
+```
+
+`.m2` 不属于项目文件，不应提交到 Git。
+
+------
+
+## 6. 后端构建
+
+进入：
+
+```text
+fitnessSystem/
+```
+
+Linux / macOS：
+
+```bash
+./mvnw clean verify
+```
+
+Windows PowerShell：
+
+```powershell
+.\mvnw.cmd clean verify
+```
+
+如果只需要编译打包：
+
+Linux / macOS：
+
+```bash
+./mvnw package
+```
+
+Windows PowerShell：
+
+```powershell
+.\mvnw.cmd package
+```
+
+------
+
+## 7. 后端测试
+
+Linux / macOS：
+
+```bash
+./mvnw test
+```
+
+Windows PowerShell：
+
+```powershell
+.\mvnw.cmd test
+```
+
+当前 Maven Wrapper、Java 21 和 Maven 测试生命周期已经可以正常执行。
+
+> 注意：当前工程仍需要在 T0.5 中补齐独立测试配置和实际可重复运行的测试。
+> M0 最终验收不能以 `Tests run: 0` 作为完整测试基线。
+
+------
+
+## 8. 启动后端
+
+进入：
+
+```text
+fitnessSystem/
+```
+
+Linux / macOS：
+
+```bash
+./mvnw spring-boot:run
+```
+
+Windows PowerShell：
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+或者先构建：
+
+```bash
+./mvnw package
+```
+
+Windows：
+
+```powershell
+.\mvnw.cmd package
+```
+
+再运行生成的 JAR。
+
+具体产物名称以 `target/` 中实际生成的文件为准。
+
+------
+
+## 9. 环境变量
+
+敏感配置不得直接写入 Git。
+
+当前后端配置通过环境变量读取敏感值，例如：
+
+```text
+DB_PASSWORD
+JWT_SECRET
+```
+
+禁止在 Git 中提交：
+
+- 真实数据库密码
+- JWT Secret
+- API Key
+- `.env`
+- 本地私有配置
+- 生产环境凭据
+
+示例配置只能使用占位值，例如：
+
+```text
+DB_PASSWORD=<db-password>
+JWT_SECRET=<至少 32 字节随机字符串>
+LLM_API_KEY=<your-api-key>
+```
+
+### Windows PowerShell 示例
+
+临时设置环境变量：
+
+```powershell
+$env:DB_PASSWORD = "your-local-password"
+$env:JWT_SECRET = "your-local-secret"
+```
+
+这些变量仅对当前 PowerShell 会话生效。
+
+### Linux / macOS 示例
+
+```bash
+export DB_PASSWORD="your-local-password"
+export JWT_SECRET="your-local-secret"
+```
+
+------
+
+## 10. 本地 MySQL 与 Redis
+
+M0 的 T0.4 将使用 Docker Compose 提供：
+
+- MySQL 8
+- Redis
+- 本地持久化 volume
+- 环境变量配置
+- 健康检查
+
+完成 T0.4 后，标准启动命令应为：
+
+```bash
+docker compose up -d
+```
+
+查看状态：
+
+```bash
+docker compose ps
+```
+
+停止容器：
+
+```bash
+docker compose down
+```
+
+删除容器以及本地数据卷：
+
+```bash
+docker compose down -v
+```
+
+> `docker compose down -v` 会删除本地 MySQL 和 Redis 数据，只应在需要完全重置本地环境时使用。
+
+------
+
+## 11. Flyway 数据库迁移
+
+项目使用 Flyway 管理数据库结构。
+
+后端迁移目录：
+
+```text
+fitnessSystem/src/main/resources/db/migration/
+```
+
+迁移文件采用：
+
+```text
+V<version>__<description>.sql
+```
 
 例如：
 
-| 开发目标 | 建议阅读                                              |
-| -------- | ----------------------------------------------------- |
-| 了解全局 | `00_版本总览.md`                                      |
-| V1       | `00` → `01`                                           |
-| V1.1     | `00` → `01` → `02`                                    |
-| V1.2     | `00` → `01` → `02` → `03`                             |
-| V1.5     | `00` → `01` → `04`                                    |
-| V2       | `00` → `01` → `04` → `05`                             |
-| V2.5     | `00` → `05` → `06`                                    |
-| V3       | `00` → `04` → `05` → `06` → `07`                      |
-| V4       | `00` → `01` → `04` → `05` → `08`                      |
-| V4.5     | `00` → `08` → `09`                                    |
-| V5       | `00` → `01` → `03` → `04` → `05` → `08` → `09` → `10` |
-| V6       | `00` → `07` → `10` → `11`                             |
+```text
+V1_0_0__create_app_user.sql
+V1_0_1__create_food_catalog.sql
+V3_5_0__add_training_analytics_indexes.sql
+```
 
-## 关键业务规则摘要
+规则：
 
-### 1. 历史事实不可被食品库改写
+- 不修改已经正式执行过的历史 migration；
+- 数据库结构变更通过新增 migration 完成；
+- 空数据库启动时 Flyway 应自动建表；
+- 应用重复启动时不得重复执行已经成功的 migration；
+- migration 执行记录由 Flyway schema history 管理。
 
-饮食记录创建时必须保存历史营养快照，包括：
+T0.4 完成后，需要验证：
 
-- 当时的食品名称；
-- 当时每 100g 的热量、蛋白质、脂肪、碳水；
-- 本次实际重量；
-- 本次实际摄入结果。
+1. 删除本地数据库 volume；
+2. 启动新的 MySQL；
+3. 启动后端；
+4. Flyway 自动建立全部表；
+5. 再次启动后端；
+6. 已执行 migration 不重复执行。
 
-管理员后续修改食品营养信息，不影响已有历史记录。
+------
 
-### 2. 训练计划与训练事实分离
+## 12. 前端构建
 
-- 训练计划是模板和安排；
-- 训练 Session 与 Workout Set 是实际发生事实；
-- 修改计划不回写已完成历史；
-- AI 创建计划必须保存为正式训练计划，不能只存在于聊天中。
+前端工程将在 T0.3 中完成构建基线修复。
 
-### 3. 权限与授权边界
+T0.3 需要保证：
 
-- 普通用户只能访问自己的数据；
-- 教练权限来自有效关系 + 明确授权范围；
-- 学员撤销授权后，教练及其 AI 立即失去访问；
-- AI 只能查询当前登录用户有权访问的数据。
+```bash
+npm ci
+npm run type-check
+npm test
+npm run build
+```
 
-### 4. AI 写操作安全
+全部通过。
 
-- AI 不直接访问 Repository/SQL；
-- 所有写操作调用已有业务 Service/API/Tool；
-- 简单低风险操作可直接执行并支持查看/撤销；
-- 歧义、高影响、批量、覆盖类操作必须预览确认；
-- 重试不能产生重复写入，需要 requestId 幂等。
+当前已知问题：
 
-### 5. 导入与导出
+```text
+tsconfig.vitest.json
+```
 
-- 导出属于用户数据所有权能力，不依赖 AI；
-- AI 导出复用同一套导出业务能力；
-- 导入流程为：识别 → 映射 → 预览 → 确认 → 导入 → 报告；
-- 低置信度数据不得未经确认直接进入正式历史；
-- 导入数据写入后必须能正常参与后续导出。
+缺失导致 TypeScript 配置引用失败。
 
-### 6. 时区与日期
+该问题应通过恢复正确的 Vitest TypeScript 配置解决，不能通过删除测试配置引用绕过。
 
-- “今天”由用户当前时区决定；
-- 用户修改时区后，不自动移动已经保存的历史业务日期；
-- 系统需区分“用户认为是哪一天吃的”和“系统实际创建时间”。
+完成 T0.3 后，本节应更新为项目实际的前端目录和最终可执行命令。
 
-## 技术约束概览
+------
 
-- 后端：Java 21 + Spring Boot 3；
-- 登录与权限：Spring Security + JWT；
-- 数据库：MySQL 8.x，保存结构化业务事实；
-- 营养计算：十进制定点计算，避免普通浮点误差；
-- Redis：用于短期 Conversation Memory、Pending Action 等短期状态；
-- AI 集成：LangChain4j 承担 Agent / Tool Calling；
-- AI 输出：Structured Output 使用明确 Schema；
-- 流式响应：AI Chat 使用 SSE；
-- 语音：Speech-to-Text 作为输入层，默认先转写为可见文字；
-- 文件与图片：对象存储保存用户上传图片/文件；
-- RAG：独立检索能力，MySQL 保存用户事实，RAG 保存非结构化知识；
-- V1 不引入 AI/LangChain4j/RAG；
-- AI 服务不可用时，传统业务页面仍必须完整可用。
+## 13. 测试隔离
 
-## 核心领域概念
+T0.5 将建立独立测试配置。
 
-- 用户与营养目标；
-- 食品、食品分类、历史营养快照；
-- 饮食记录、餐次、饮食图片；
-- 身体测量、身体进度照片、趋势；
-- 动作、训练计划、训练 Session、Workout Set；
-- 教练关系、数据授权、教练反馈；
-- AI 会话、Agent Run、Tool 调用、RAG 检索、Trace；
-- 导入任务、导出任务、下载包。
+测试不得依赖开发者本机已有的：
 
-## 开发与协作约定
+```text
+fitness
+```
 
-1. PRD 主体不展开数据库表结构、Java 类设计、Redis Key、接口字段级协议，这些内容进入技术设计文档。
-2. 开发某版本时，以当前版本 PRD 的验收标准为准。
-3. 所有新增、修改、删除操作必须进行服务端校验。
-4. 所有用户资源必须按当前登录用户隔离。
-5. Dashboard、历史汇总、导出数据必须使用一致口径。
-6. AI 相关功能必须可降级：AI 故障不能阻塞饮食、身体、训练等基础功能。
-7. 高影响 AI 操作必须可审计，能够追踪结构化意图、Tool 调用、确认与最终结果。
+数据库。
+
+计划使用隔离的测试环境，使测试满足：
+
+- 可重复运行；
+- 不污染开发数据库；
+- 不依赖开发者本机历史数据；
+- CI 中可以运行；
+- Flyway migration 可以在空测试数据库上验证。
+
+测试环境最终将根据项目实际情况选择 Testcontainers 或独立测试数据库，并在本节记录选择原因。
+
+------
+
+## 14. CI
+
+T0.6 将建立持续集成基线。
+
+每次提交或 Pull Request 至少执行：
+
+### 后端
+
+```text
+Java 21
+Maven Wrapper
+Backend tests
+```
+
+### 前端
+
+```text
+npm ci
+npm run type-check
+npm test
+npm run build
+```
+
+CI 必须满足：
+
+- 正常提交可以正确通过；
+- 故意破坏测试后 CI 可以正确失败；
+- 缓存不能跳过实际测试或构建；
+- 日志不得输出 Secret；
+- CI 不依赖开发者本机环境。
+
+------
+
+## 15. `.gitignore`
+
+仓库应忽略至少以下内容：
+
+### IDE
+
+```text
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+```
+
+### 敏感和本地环境
+
+```text
+.env
+.env.*
+application-local.yml
+application-secret.yml
+```
+
+`.env.example` 可以提交。
+
+### Java / Maven
+
+```text
+target/
+**/target/
+.m2/
+*.log
+```
+
+注意：
+
+```text
+.mvn/
+mvnw
+mvnw.cmd
+```
+
+属于 Maven Wrapper，必须提交到 Git，不能忽略。
+
+### Node
+
+```text
+node_modules/
+dist/
+coverage/
+```
+
+### 本地数据库及运行数据
+
+```text
+*.db
+*.sqlite
+*.sqlite3
+data/
+mysql-data/
+redis-data/
+```
+
+### 临时文件和导出物
+
+```text
+tmp/
+temp/
+exports/
+*.zip
+*.tar
+*.tar.gz
+```
+
+------
+
+## 16. Windows PowerShell 常用命令
+
+进入项目：
+
+```powershell
+Set-Location "D:\codes\fitness-platform"
+```
+
+进入后端：
+
+```powershell
+Set-Location ".\fitnessSystem"
+```
+
+检查 Java：
+
+```powershell
+java -version
+```
+
+检查 Maven Wrapper：
+
+```powershell
+.\mvnw.cmd --version
+```
+
+运行测试：
+
+```powershell
+.\mvnw.cmd test
+```
+
+构建：
+
+```powershell
+.\mvnw.cmd clean verify
+```
+
+启动：
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+> PowerShell 不使用 CMD 的 `cd /d` 语法。
+> PowerShell 中可以直接使用 `Set-Location "D:\path"` 或 `cd "D:\path"`。
+
+------
+
+## 17. M0 干净环境验收
+
+M0 完成后，需要在新的目录重新 clone 项目进行完整验收。
+
+### 17.1 克隆
+
+```bash
+git clone https://github.com/heydapeng/fitness-platform.git
+cd fitness-platform
+```
+
+### 17.2 检查工具
+
+```bash
+java -version
+node --version
+npm --version
+docker --version
+docker compose version
+```
+
+Java 必须为 21。
+
+### 17.3 启动基础设施
+
+```bash
+docker compose up -d
+docker compose ps
+```
+
+### 17.4 后端
+
+Linux / macOS：
+
+```bash
+cd fitnessSystem
+./mvnw --version
+./mvnw test
+./mvnw clean verify
+```
+
+Windows PowerShell：
+
+```powershell
+Set-Location .\fitnessSystem
+.\mvnw.cmd --version
+.\mvnw.cmd test
+.\mvnw.cmd clean verify
+```
+
+### 17.5 前端
+
+完成 T0.3 后，应可以在前端目录执行：
+
+```bash
+npm ci
+npm run type-check
+npm test
+npm run build
+```
+
+### 17.6 验收标准
+
+全部满足以下条件才算 M0 完成：
+
+- Java 21 正确；
+- Maven Wrapper 可以独立工作；
+- 不依赖全局 Maven；
+- 后端测试通过；
+- 前端 type-check 通过；
+- 前端测试通过；
+- 前端构建通过；
+- MySQL 8 可以启动；
+- Redis 可以连接；
+- 空数据库 Flyway 自动建表；
+- 重复启动不会重复建表；
+- 测试不依赖开发者本机 `fitness` 数据库；
+- CI 可以正确识别成功和失败；
+- README 中的命令可以从干净 checkout 直接执行；
+- Git 中不存在真实数据库密码、JWT Secret 或其他 Secret。
+
+------
+
+## 18. M0 当前进度
+
+### T0.1 保护现有工作并建立提交基线
+
+进行中。
+
+已完成：
+
+- 已备份现有工作区；
+- `.gitignore` 已补充工程基线规则；
+- 数据库密码和 JWT Secret 改为通过环境变量读取。
+
+仍需：
+
+- 整理已有修改、目录移动和新增文件；
+- 建立语义明确的 Git 提交。
+
+### T0.2 Java 与 Maven 环境
+
+核心验证已完成。
+
+当前已验证：
+
+```text
+Java 21.0.7
+Apache Maven 3.9.16
+Maven Wrapper 3.3.4
+```
+
+Windows PowerShell：
+
+```powershell
+.\mvnw.cmd --version
+.\mvnw.cmd test
+```
+
+Maven Wrapper 可以正常运行，不依赖机器全局 Maven。
+
+仍需：
+
+- 将 `mvnw`、`mvnw.cmd`、`.mvn/wrapper/maven-wrapper.properties` 纳入 Git；
+- 完成 T0.2 对应提交。
+
+### T0.3 前端构建基线
+
+待处理。
+
+### T0.4 MySQL / Redis 本地基础设施
+
+待处理。
+
+### T0.5 测试配置隔离
+
+待处理。
+
+### T0.6 CI 基线
+
+待处理。
+
+------
+
+## 19. 当前阶段范围
+
+M0 阶段只保证：
+
+- 干净环境可安装；
+- 干净环境可构建；
+- 干净环境可测试；
+- 干净环境可启动；
+- 开发环境和 CI 行为可重复。
+
+M0 不新增业务功能。
