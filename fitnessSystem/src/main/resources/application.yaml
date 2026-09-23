@@ -1,7 +1,7 @@
 spring:
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/fitness?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC}
-    username: ${DB_USERNAME:root}
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:fitness}?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:fitness}
     password: ${DB_PASSWORD}
 
   jpa:
@@ -30,6 +30,5 @@ spring:
 
 app:
   jwt:
-    # 生产环境必须通过 JWT_SECRET 环境变量覆盖。
     secret: ${JWT_SECRET}
     expiration-seconds: ${JWT_EXPIRATION_SECONDS:7200}
