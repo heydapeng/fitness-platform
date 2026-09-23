@@ -21,13 +21,13 @@ Authorization: Bearer <access-token>
 
 ```json
 {
-  "code": 0,
+  "code": "SUCCESS",
   "message": "success",
   "data": {}
 }
 ```
 
-- `code=0` 表示成功；
+- `code=SUCCESS` 表示成功；
 - 创建成功使用 HTTP 201；
 - 删除成功使用 HTTP 204 时不返回 envelope，或统一使用 200 + envelope；项目必须二选一。本项目约定删除使用 200 + `data: null`；
 - 异步任务创建使用 HTTP 202。
@@ -40,11 +40,13 @@ Authorization: Bearer <access-token>
   "message": "该记录已超过30天编辑窗口",
   "data": null,
   "traceId": "01J...",
-  "fieldErrors": []
+  "fieldErrors": [
+    {"field": "email", "message": "邮箱格式不正确"}
+  ]
 }
 ```
 
-目标实现应把当前整数 HTTP 状态码式业务 `code` 升级为稳定字符串错误码；HTTP 状态表达协议结果，`code` 表达业务原因。
+`code` 始终为稳定字符串错误码；HTTP 状态表达协议结果，`code` 表达业务原因。成功响应不返回 `traceId` 和 `fieldErrors`；失败响应返回本次请求的 `traceId`，字段校验失败时返回 `fieldErrors`。
 
 ### 1.4 HTTP 状态
 
@@ -102,6 +104,10 @@ page=0&size=20&sort=createdAt,desc
   "last": true
 }
 ```
+
+- `page` 默认 0，`size` 默认 20，最大 100；非法页码、大小和排序字段返回 `VALIDATION_FAILED`。
+- 每个接口只允许自己的排序字段白名单，格式固定为 `field,asc` 或 `field,desc`。
+- 时间使用 ISO-8601 UTC 字符串，金额和营养数值统一保留两位小数，枚举输出名称字符串。
 
 ### 1.7 数值、日期与枚举
 

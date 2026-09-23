@@ -1,5 +1,6 @@
 package com.dapeng.fitnesssystem.security;
 
+import com.dapeng.fitnesssystem.common.response.ErrorCode;
 import com.dapeng.fitnesssystem.common.response.Result;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,6 +30,6 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
-        objectMapper.writeValue(response.getWriter(), Result.failure(401, "请先登录"));
+        objectMapper.writeValue(response.getWriter(), Result.failure(ErrorCode.UNAUTHENTICATED, "请先登录"));
     }
 }
