@@ -7,7 +7,7 @@
 > 当前阶段目标：任何开发者按照本 README，可以在干净环境中完成项目的构建、测试和启动。
 > M0 阶段只建立工程基线，不新增业务功能。
 
-------
+---
 
 ## 1. 技术栈
 
@@ -17,14 +17,17 @@
 - Spring Boot 3.x
 - Maven Wrapper
 - MySQL 8
-- Redis 7+
+- Redis 7
 - Flyway
+- Testcontainers
+- JUnit 5
 
 ### 前端
 
-- Node.js
+- Node.js 22
 - npm
 - TypeScript
+- Vue
 - Vite
 - Vitest
 
@@ -33,20 +36,24 @@
 - Docker
 - Docker Compose
 
-------
+### CI
+
+- GitHub Actions
+
+---
 
 ## 2. 前置要求
 
 开始前请确认本机已安装以下工具：
 
-| 工具           | 要求                           | 检查命令                 |
-| -------------- | ------------------------------ | ------------------------ |
-| JDK            | Java 21                        | `java -version`          |
-| Git            | 近期版本                       | `git --version`          |
-| Docker         | 支持 Docker Compose v2         | `docker --version`       |
-| Docker Compose | v2                             | `docker compose version` |
-| Node.js        | 以项目 `package.json` 要求为准 | `node --version`         |
-| npm            | 与 Node.js 配套版本            | `npm --version`          |
+| 工具           | 要求                | 检查命令                 |
+| -------------- | ------------------- | ------------------------ |
+| JDK            | Java 21             | `java -version`          |
+| Git            | 近期版本            | `git --version`          |
+| Docker         | 可正常运行容器      | `docker --version`       |
+| Docker Compose | Compose v2          | `docker compose version` |
+| Node.js        | 22.x                | `node --version`         |
+| npm            | 与 Node.js 配套版本 | `npm --version`          |
 
 后端**不要求全局安装 Maven**。
 
@@ -55,9 +62,9 @@
 - Linux / macOS：`./mvnw`
 - Windows PowerShell：`.\mvnw.cmd`
 
-MySQL 和 Redis 后续由 Docker Compose 提供，本机无需单独安装。
+MySQL 和 Redis 由 Docker Compose 提供，本机无需单独安装。
 
-------
+---
 
 ## 3. 克隆项目
 
@@ -66,31 +73,46 @@ git clone https://github.com/heydapeng/fitness-platform.git
 cd fitness-platform
 ```
 
-------
+如果需要使用当前开发分支：
 
-## 4. 后端环境
+```bash
+git switch dev-v1
+```
 
-后端目录：
+---
+
+## 4. 项目目录
+
+主要目录：
+
+```text
+fitness-platform/
+├─ .github/
+│  └─ workflows/
+│     └─ ci.yml
+├─ fitnessSystem/
+├─ fitness-frontend/
+├─ fitness_platform_db_design/
+├─ .env.example
+├─ compose.yaml
+└─ README.md
+```
+
+其中：
 
 ```text
 fitnessSystem/
 ```
 
-进入后端目录：
+为 Spring Boot 后端工程。
 
-### Linux / macOS
-
-```bash
-cd fitnessSystem
+```text
+fitness-frontend/
 ```
 
-### Windows PowerShell
+为前端工程。
 
-```powershell
-Set-Location .\fitnessSystem
-```
-
-------
+---
 
 ## 5. Java 与 Maven Wrapper
 
@@ -119,31 +141,36 @@ openjdk version "21.x.x"
 Linux / macOS：
 
 ```bash
+cd fitnessSystem
 ./mvnw --version
 ```
 
 Windows PowerShell：
 
 ```powershell
+Set-Location .\fitnessSystem
 .\mvnw.cmd --version
 ```
 
-当前工程基线使用：
+当前工程基线：
 
 ```text
-Apache Maven 3.9.16
 Java 21
+Apache Maven 3.9.16
+Maven Wrapper 3.3.4
 ```
 
 Maven Wrapper 会自动下载项目指定的 Maven 版本，因此无需在开发机上单独安装 Maven。
 
-Maven 下载内容位于开发者自己的 Maven 本地仓库，例如：
+Maven 下载内容位于开发者自己的本地 Maven 仓库，例如：
+
+Windows：
 
 ```text
 C:\Users\<username>\.m2
 ```
 
-或：
+Linux / macOS：
 
 ```text
 ~/.m2
@@ -151,112 +178,23 @@ C:\Users\<username>\.m2
 
 `.m2` 不属于项目文件，不应提交到 Git。
 
-------
+---
 
-## 6. 后端构建
-
-进入：
-
-```text
-fitnessSystem/
-```
-
-Linux / macOS：
-
-```bash
-./mvnw clean verify
-```
-
-Windows PowerShell：
-
-```powershell
-.\mvnw.cmd clean verify
-```
-
-如果只需要编译打包：
-
-Linux / macOS：
-
-```bash
-./mvnw package
-```
-
-Windows PowerShell：
-
-```powershell
-.\mvnw.cmd package
-```
-
-------
-
-## 7. 后端测试
-
-Linux / macOS：
-
-```bash
-./mvnw test
-```
-
-Windows PowerShell：
-
-```powershell
-.\mvnw.cmd test
-```
-
-当前 Maven Wrapper、Java 21 和 Maven 测试生命周期已经可以正常执行。
-
-> 注意：当前工程仍需要在 T0.5 中补齐独立测试配置和实际可重复运行的测试。
-> M0 最终验收不能以 `Tests run: 0` 作为完整测试基线。
-
-------
-
-## 8. 启动后端
-
-进入：
-
-```text
-fitnessSystem/
-```
-
-Linux / macOS：
-
-```bash
-./mvnw spring-boot:run
-```
-
-Windows PowerShell：
-
-```powershell
-.\mvnw.cmd spring-boot:run
-```
-
-或者先构建：
-
-```bash
-./mvnw package
-```
-
-Windows：
-
-```powershell
-.\mvnw.cmd package
-```
-
-再运行生成的 JAR。
-
-具体产物名称以 `target/` 中实际生成的文件为准。
-
-------
-
-## 9. 环境变量
+## 6. 环境变量
 
 敏感配置不得直接写入 Git。
 
-当前后端配置通过环境变量读取敏感值，例如：
+当前工程通过环境变量读取敏感值，例如：
 
 ```text
 DB_PASSWORD
 JWT_SECRET
+```
+
+Docker Compose 还可能使用：
+
+```text
+MYSQL_ROOT_PASSWORD
 ```
 
 禁止在 Git 中提交：
@@ -268,17 +206,48 @@ JWT_SECRET
 - 本地私有配置
 - 生产环境凭据
 
-示例配置只能使用占位值，例如：
+仓库提供：
+
+```text
+.env.example
+```
+
+作为本地环境变量模板。
+
+可以复制为：
+
+```text
+.env
+```
+
+然后填写本机使用的值。
+
+### Linux / macOS
+
+```bash
+cp .env.example .env
+```
+
+### Windows PowerShell
+
+```powershell
+Copy-Item .env.example .env
+```
+
+示例配置必须使用占位值，例如：
 
 ```text
 DB_PASSWORD=<db-password>
 JWT_SECRET=<至少 32 字节随机字符串>
-LLM_API_KEY=<your-api-key>
 ```
 
-### Windows PowerShell 示例
+不要把真实密码写回：
 
-临时设置环境变量：
+```text
+.env.example
+```
+
+### Windows PowerShell 临时环境变量
 
 ```powershell
 $env:DB_PASSWORD = "your-local-password"
@@ -287,64 +256,139 @@ $env:JWT_SECRET = "your-local-secret"
 
 这些变量仅对当前 PowerShell 会话生效。
 
-### Linux / macOS 示例
+### Linux / macOS 临时环境变量
 
 ```bash
 export DB_PASSWORD="your-local-password"
 export JWT_SECRET="your-local-secret"
 ```
 
-------
+---
 
-## 10. 本地 MySQL 与 Redis
+## 7. 本地 MySQL 与 Redis
 
-M0 的 T0.4 将使用 Docker Compose 提供：
+项目使用根目录：
+
+```text
+compose.yaml
+```
+
+提供本地基础设施。
+
+当前包括：
 
 - MySQL 8
-- Redis
-- 本地持久化 volume
-- 环境变量配置
+- Redis 7
+- 持久化 volume
 - 健康检查
+- 环境变量配置
 
-完成 T0.4 后，标准启动命令应为：
+当前本地端口基线：
+
+```text
+MySQL: 3307
+Redis: 6380
+```
+
+### 7.1 启动
+
+在项目根目录执行：
 
 ```bash
 docker compose up -d
 ```
 
-查看状态：
+### 7.2 查看状态
 
 ```bash
 docker compose ps
 ```
 
-停止容器：
+正常情况下 MySQL 和 Redis 应处于：
+
+```text
+healthy
+```
+
+或正常运行状态。
+
+### 7.3 Redis 连通性验证
+
+可以执行：
+
+```bash
+docker compose exec redis redis-cli ping
+```
+
+正常返回：
+
+```text
+PONG
+```
+
+### 7.4 停止容器
 
 ```bash
 docker compose down
 ```
 
-删除容器以及本地数据卷：
+该命令停止并删除容器，但保留 volume 中的数据。
+
+### 7.5 完全清理
 
 ```bash
 docker compose down -v
 ```
 
-> `docker compose down -v` 会删除本地 MySQL 和 Redis 数据，只应在需要完全重置本地环境时使用。
+该命令会同时删除 MySQL 和 Redis 的本地数据卷。
 
-------
+> `docker compose down -v` 会删除本地开发数据，只应在需要完全重置数据库或进行空库验收时使用。
 
-## 11. Flyway 数据库迁移
+---
+
+## 8. 后端配置
+
+后端目录：
+
+```text
+fitnessSystem/
+```
+
+主要配置文件：
+
+```text
+fitnessSystem/src/main/resources/application.yaml
+```
+
+数据库密码和 JWT Secret 不直接写死在配置文件中，而是从环境变量读取。
+
+例如：
+
+```yaml
+password: ${DB_PASSWORD}
+```
+
+以及：
+
+```yaml
+secret: ${JWT_SECRET}
+```
+
+这样可以避免把真实凭据提交到 Git。
+
+---
+
+## 9. Flyway 数据库迁移
 
 项目使用 Flyway 管理数据库结构。
 
-后端迁移目录：
+迁移目录：
 
 ```text
 fitnessSystem/src/main/resources/db/migration/
 ```
 
-迁移文件采用：
+迁移文件格式：
 
 ```text
 V<version>__<description>.sql
@@ -358,57 +402,354 @@ V1_0_1__create_food_catalog.sql
 V3_5_0__add_training_analytics_indexes.sql
 ```
 
-规则：
+当前规则：
 
 - 不修改已经正式执行过的历史 migration；
 - 数据库结构变更通过新增 migration 完成；
-- 空数据库启动时 Flyway 应自动建表；
-- 应用重复启动时不得重复执行已经成功的 migration；
+- 空数据库启动时 Flyway 自动创建数据库结构；
+- 应用重复启动时不重复执行已经成功的 migration；
 - migration 执行记录由 Flyway schema history 管理。
 
-T0.4 完成后，需要验证：
+本项目部分 migration 包含 trigger。
 
-1. 删除本地数据库 volume；
-2. 启动新的 MySQL；
-3. 启动后端；
-4. Flyway 自动建立全部表；
-5. 再次启动后端；
-6. 已执行 migration 不重复执行。
+因此 MySQL 使用：
 
-------
+```text
+--log-bin-trust-function-creators=1
+```
 
-## 12. 前端构建
+以允许相关 migration 正常执行。
 
-前端工程将在 T0.3 中完成构建基线修复。
+### 9.1 空数据库验证
 
-T0.3 需要保证：
+完全重置本地数据库：
+
+```bash
+docker compose down -v
+docker compose up -d
+```
+
+等待 MySQL 健康后启动后端。
+
+第一次启动时，Flyway 应：
+
+1. 连接空数据库；
+2. 创建 Flyway schema history；
+3. 按版本顺序执行 migration；
+4. 建立当前完整数据库结构。
+
+### 9.2 重复启动验证
+
+再次启动后端时，Flyway 应识别当前数据库版本，并显示类似：
+
+```text
+Schema fitness is up to date. No migration necessary.
+```
+
+已经成功执行过的 migration 不会重复执行。
+
+---
+
+## 10. 后端测试
+
+后端测试使用 Maven Wrapper。
+
+Linux / macOS：
+
+```bash
+cd fitnessSystem
+./mvnw test
+```
+
+Windows PowerShell：
+
+```powershell
+Set-Location .\fitnessSystem
+.\mvnw.cmd test
+```
+
+当前测试基线使用：
+
+```text
+Testcontainers + MySQL 8
+```
+
+而不是开发者本机已有的 MySQL 数据库。
+
+测试环境具有以下特性：
+
+- 不依赖本机 `fitness` 数据库；
+- 不依赖开发者历史数据；
+- 每次测试使用独立 MySQL 8 容器；
+- Flyway 在空测试数据库中执行 migration；
+- 测试数据库配置动态注入；
+- 测试不会污染开发数据库；
+- CI 中可以使用相同机制运行。
+
+测试 profile：
+
+```text
+fitnessSystem/src/test/resources/application-test.yml
+```
+
+Testcontainers 支持代码：
+
+```text
+fitnessSystem/src/test/java/com/dapeng/fitnesssystem/support/MySqlContainerTest.java
+```
+
+测试 MySQL 使用：
+
+```text
+--log-bin-trust-function-creators=1
+```
+
+保证包含 trigger 的 Flyway migration 可以执行。
+
+当前后端测试已经验证：
+
+```text
+Tests run: 1
+Failures: 0
+Errors: 0
+Skipped: 0
+BUILD SUCCESS
+```
+
+并且可以连续重复运行。
+
+---
+
+## 11. Windows + WSL 测试说明
+
+Testcontainers 必须能够访问 Docker daemon。
+
+如果 Docker 运行在 Docker Desktop 中，并且 Windows Java 可以访问 Docker daemon，可以直接使用：
+
+```powershell
+.\mvnw.cmd test
+```
+
+如果 Docker daemon 只运行在 WSL 内部，而 Windows JVM 无法访问该 Docker daemon，则应在 WSL 中运行后端测试。
+
+例如：
+
+```powershell
+wsl bash -lc "cd /mnt/d/codes/fitness-platform/fitnessSystem && ./mvnw test"
+```
+
+此时需要确保 WSL 中也安装了 Java 21。
+
+检查：
+
+```bash
+java -version
+```
+
+测试运行环境与 Docker daemon 应能够互相访问。
+
+---
+
+## 12. 后端构建
+
+进入：
+
+```text
+fitnessSystem/
+```
+
+### Linux / macOS
+
+完整验证：
+
+```bash
+./mvnw clean verify
+```
+
+只编译打包：
+
+```bash
+./mvnw package
+```
+
+### Windows PowerShell
+
+完整验证：
+
+```powershell
+.\mvnw.cmd clean verify
+```
+
+只编译打包：
+
+```powershell
+.\mvnw.cmd package
+```
+
+构建产物位于：
+
+```text
+fitnessSystem/target/
+```
+
+具体 JAR 文件名以实际构建结果为准。
+
+---
+
+## 13. 启动后端
+
+启动前应确保：
+
+- MySQL 已启动；
+- Redis 已启动；
+- 所需环境变量已经设置；
+- Java 版本为 21。
+
+进入：
+
+```text
+fitnessSystem/
+```
+
+### Linux / macOS
+
+```bash
+./mvnw spring-boot:run
+```
+
+### Windows PowerShell
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+也可以先构建：
+
+```bash
+./mvnw package
+```
+
+然后运行 `target/` 中生成的 JAR。
+
+---
+
+## 14. 前端安装、测试与构建
+
+前端目录：
+
+```text
+fitness-frontend/
+```
+
+进入目录：
+
+```bash
+cd fitness-frontend
+```
+
+### 14.1 安装依赖
+
+```bash
+npm ci
+```
+
+CI 和干净环境均使用：
+
+```text
+npm ci
+```
+
+而不是依赖开发者已有的 `node_modules`。
+
+### 14.2 TypeScript 类型检查
+
+```bash
+npm run type-check
+```
+
+实际执行：
+
+```text
+vue-tsc --build
+```
+
+### 14.3 单元测试
+
+```bash
+npm run test:unit -- --run
+```
+
+当前测试框架：
+
+```text
+Vitest
+```
+
+`--run` 用于单次执行测试并退出，适用于 CI。
+
+当前测试基线已经验证：
+
+```text
+Test Files  1 passed
+Tests       1 passed
+```
+
+### 14.4 Production Build
+
+```bash
+npm run build
+```
+
+当前 `build` script 会执行：
+
+```text
+type-check
+build-only
+```
+
+其中 `build-only` 使用：
+
+```text
+vite build
+```
+
+### 14.5 当前前端基线
+
+以下命令已经验证全部通过：
 
 ```bash
 npm ci
 npm run type-check
-npm test
+npm run test:unit -- --run
 npm run build
 ```
 
-全部通过。
+Vitest TypeScript 配置已经恢复。
 
-当前已知问题：
+测试配置不能通过删除 Vitest TypeScript 引用的方式绕过。
+
+---
+
+## 15. 测试隔离设计
+
+M0 使用：
 
 ```text
-tsconfig.vitest.json
+Testcontainers + MySQL 8
 ```
 
-缺失导致 TypeScript 配置引用失败。
+作为后端数据库测试隔离方案。
 
-该问题应通过恢复正确的 Vitest TypeScript 配置解决，不能通过删除测试配置引用绕过。
+选择 Testcontainers 的原因：
 
-完成 T0.3 后，本节应更新为项目实际的前端目录和最终可执行命令。
-
-------
-
-## 13. 测试隔离
-
-T0.5 将建立独立测试配置。
+- 与开发和目标运行环境使用相同的 MySQL 8 数据库引擎；
+- 不依赖开发者本机已有数据库；
+- 可以从空数据库验证 Flyway；
+- 测试环境自动创建；
+- 测试结束后可以自动清理；
+- 多次运行结果可重复；
+- GitHub Actions 可以直接运行；
+- 避免 H2 与 MySQL SQL 行为差异。
 
 测试不得依赖开发者本机已有的：
 
@@ -418,54 +759,143 @@ fitness
 
 数据库。
 
-计划使用隔离的测试环境，使测试满足：
+Testcontainers 会动态提供：
 
-- 可重复运行；
-- 不污染开发数据库；
-- 不依赖开发者本机历史数据；
-- CI 中可以运行；
-- Flyway migration 可以在空测试数据库上验证。
+```text
+spring.datasource.url
+spring.datasource.username
+spring.datasource.password
+spring.datasource.driver-class-name
+```
 
-测试环境最终将根据项目实际情况选择 Testcontainers 或独立测试数据库，并在本节记录选择原因。
+因此测试配置中不需要保存真实数据库密码。
 
-------
+---
 
-## 14. CI
+## 16. CI
 
-T0.6 将建立持续集成基线。
+项目使用 GitHub Actions。
 
-每次提交或 Pull Request 至少执行：
+Workflow 文件：
 
-### 后端
+```text
+.github/workflows/ci.yml
+```
+
+触发条件：
+
+```text
+push
+pull_request
+workflow_dispatch
+```
+
+因此代码提交或 Pull Request 会自动运行 CI。
+
+`workflow_dispatch` 提供可选的 `failure_probe` 开关。手动运行并启用该开关时，
+工作流会执行一个明确标记的故意失败任务，用于验证 GitHub Actions 能正确识别失败；
+普通 push、Pull Request 和未启用该开关的手动运行不受影响。
+
+### 16.1 后端 CI
+
+运行环境：
+
+```text
+ubuntu-latest
+```
+
+Java：
 
 ```text
 Java 21
-Maven Wrapper
-Backend tests
 ```
 
-### 前端
+后端命令：
+
+```bash
+./mvnw --batch-mode --no-transfer-progress test
+```
+
+GitHub Runner 提供 Docker 环境。
+
+后端测试通过 Testcontainers 自动启动 MySQL 8，不依赖 CI 中预先配置的开发数据库。
+
+### 16.2 前端 CI
+
+运行环境：
 
 ```text
+ubuntu-latest
+```
+
+Node：
+
+```text
+Node.js 22
+```
+
+执行：
+
+```bash
 npm ci
 npm run type-check
-npm test
+npm run test:unit -- --run
 npm run build
 ```
 
-CI 必须满足：
+### 16.3 CI 缓存
 
-- 正常提交可以正确通过；
-- 故意破坏测试后 CI 可以正确失败；
-- 缓存不能跳过实际测试或构建；
-- 日志不得输出 Secret；
-- CI 不依赖开发者本机环境。
+CI 使用：
 
-------
+- Maven dependency cache
+- npm dependency cache
 
-## 15. `.gitignore`
+缓存只用于依赖。
 
-仓库应忽略至少以下内容：
+缓存不得：
+
+- 跳过后端测试；
+- 跳过前端测试；
+- 跳过 type-check；
+- 跳过 production build。
+
+### 16.4 CI Secret 要求
+
+CI 不需要提交真实：
+
+```text
+DB_PASSWORD
+JWT_SECRET
+MYSQL_ROOT_PASSWORD
+```
+
+测试数据库由 Testcontainers 提供。
+
+CI 日志不得主动执行：
+
+```bash
+cat .env
+env
+printenv
+```
+
+等可能暴露凭据的命令。
+
+### 16.5 CI 验收
+
+CI 基线需要满足：
+
+- 正常提交可以成功；
+- 故意制造失败时 CI 可以正确失败；
+- 缓存不会掩盖失败；
+- CI 不依赖开发者本机环境；
+- 日志不存在真实 Secret。
+
+---
+
+## 17. `.gitignore`
+
+仓库应忽略以下内容。
 
 ### IDE
 
@@ -487,7 +917,13 @@ application-local.yml
 application-secret.yml
 ```
 
-`.env.example` 可以提交。
+但是：
+
+```text
+.env.example
+```
+
+允许提交。
 
 ### Java / Maven
 
@@ -538,9 +974,9 @@ exports/
 *.tar.gz
 ```
 
-------
+---
 
-## 16. Windows PowerShell 常用命令
+## 18. Windows PowerShell 常用命令
 
 进入项目：
 
@@ -548,10 +984,10 @@ exports/
 Set-Location "D:\codes\fitness-platform"
 ```
 
-进入后端：
+检查 Git：
 
 ```powershell
-Set-Location ".\fitnessSystem"
+git status
 ```
 
 检查 Java：
@@ -560,47 +996,135 @@ Set-Location ".\fitnessSystem"
 java -version
 ```
 
+进入后端：
+
+```powershell
+Set-Location ".\fitnessSystem"
+```
+
 检查 Maven Wrapper：
 
 ```powershell
 .\mvnw.cmd --version
 ```
 
-运行测试：
+运行后端测试：
 
 ```powershell
 .\mvnw.cmd test
 ```
 
-构建：
+如果 Docker 只运行在 WSL：
+
+```powershell
+wsl bash -lc "cd /mnt/d/codes/fitness-platform/fitnessSystem && ./mvnw test"
+```
+
+构建后端：
 
 ```powershell
 .\mvnw.cmd clean verify
 ```
 
-启动：
+启动后端：
 
 ```powershell
 .\mvnw.cmd spring-boot:run
 ```
 
+进入前端：
+
+```powershell
+Set-Location "D:\codes\fitness-platform\fitness-frontend"
+```
+
+安装前端依赖：
+
+```powershell
+npm ci
+```
+
+类型检查：
+
+```powershell
+npm run type-check
+```
+
+运行单元测试：
+
+```powershell
+npm run test:unit -- --run
+```
+
+构建：
+
+```powershell
+npm run build
+```
+
+回到项目根目录：
+
+```powershell
+Set-Location "D:\codes\fitness-platform"
+```
+
+启动基础设施：
+
+```powershell
+docker compose up -d
+```
+
+查看状态：
+
+```powershell
+docker compose ps
+```
+
+停止：
+
+```powershell
+docker compose down
+```
+
+完全清理：
+
+```powershell
+docker compose down -v
+```
+
 > PowerShell 不使用 CMD 的 `cd /d` 语法。
-> PowerShell 中可以直接使用 `Set-Location "D:\path"` 或 `cd "D:\path"`。
+> PowerShell 中可直接使用 `Set-Location "D:\path"` 或 `cd "D:\path"`。
 
-------
+---
 
-## 17. M0 干净环境验收
+## 19. M0 干净环境验收
 
-M0 完成后，需要在新的目录重新 clone 项目进行完整验收。
+M0 最终验收应在新的目录中重新 clone 项目执行。
 
-### 17.1 克隆
+不要使用原开发目录中的：
+
+- `target/`
+- `node_modules/`
+- `dist/`
+- 本地数据库数据
+- 未提交配置
+
+来完成验收。
+
+### 19.1 克隆
 
 ```bash
 git clone https://github.com/heydapeng/fitness-platform.git
 cd fitness-platform
 ```
 
-### 17.2 检查工具
+如果 M0 当前位于开发分支：
+
+```bash
+git switch dev-v1
+```
+
+### 19.2 检查工具
 
 ```bash
 java -version
@@ -610,16 +1134,60 @@ docker --version
 docker compose version
 ```
 
-Java 必须为 21。
+要求：
 
-### 17.3 启动基础设施
+```text
+Java 21
+Node.js 22
+Docker 可用
+Docker Compose v2 可用
+```
+
+不要求安装全局 Maven。
+
+### 19.3 创建本地环境配置
+
+Linux / macOS：
+
+```bash
+cp .env.example .env
+```
+
+Windows PowerShell：
+
+```powershell
+Copy-Item .env.example .env
+```
+
+填写本地开发使用的密码。
+
+不要提交 `.env`。
+
+### 19.4 启动基础设施
 
 ```bash
 docker compose up -d
 docker compose ps
 ```
 
-### 17.4 后端
+确认：
+
+- MySQL 正常；
+- Redis 正常。
+
+Redis 验证：
+
+```bash
+docker compose exec redis redis-cli ping
+```
+
+应返回：
+
+```text
+PONG
+```
+
+### 19.5 后端测试
 
 Linux / macOS：
 
@@ -627,78 +1195,221 @@ Linux / macOS：
 cd fitnessSystem
 ./mvnw --version
 ./mvnw test
-./mvnw clean verify
 ```
 
-Windows PowerShell：
+Windows PowerShell，如果 Windows 可以直接访问 Docker：
 
 ```powershell
 Set-Location .\fitnessSystem
 .\mvnw.cmd --version
 .\mvnw.cmd test
+```
+
+如果 Docker daemon 运行在 WSL：
+
+```powershell
+wsl bash -lc "cd /mnt/d/codes/fitness-platform/fitnessSystem && ./mvnw test"
+```
+
+要求：
+
+```text
+BUILD SUCCESS
+```
+
+并且测试实际执行，不能以：
+
+```text
+Tests run: 0
+```
+
+作为测试通过的依据。
+
+### 19.6 后端构建
+
+Linux / macOS：
+
+```bash
+./mvnw clean verify
+```
+
+Windows：
+
+```powershell
 .\mvnw.cmd clean verify
 ```
 
-### 17.5 前端
+### 19.7 Flyway 空库验收
 
-完成 T0.3 后，应可以在前端目录执行：
+回到项目根目录：
+
+```bash
+docker compose down -v
+docker compose up -d
+```
+
+等待 MySQL 正常。
+
+启动后端：
+
+```bash
+cd fitnessSystem
+./mvnw spring-boot:run
+```
+
+Flyway 应：
+
+- 发现空 schema；
+- 创建 schema history；
+- 执行全部 migration；
+- 最终到达当前最新版本。
+
+停止后端后再次启动。
+
+第二次启动时不应重复执行 migration。
+
+应看到类似：
+
+```text
+Schema fitness is up to date. No migration necessary.
+```
+
+### 19.8 前端
+
+回到根目录后进入：
+
+```bash
+cd fitness-frontend
+```
+
+执行：
 
 ```bash
 npm ci
 npm run type-check
-npm test
+npm run test:unit -- --run
 npm run build
 ```
 
-### 17.6 验收标准
+全部必须成功。
+
+### 19.9 CI
+
+push 一个正常提交。
+
+GitHub Actions 应执行：
+
+```text
+Backend tests
+Frontend checks
+```
+
+并正确通过。
+
+在 GitHub Actions 页面手动运行 `CI`，并启用 `failure_probe`，验证一次故意失败场景。
+
+故意失败时 GitHub Actions 必须正确标记失败。
+
+不得通过缓存或条件判断掩盖实际失败。
+
+### 19.10 Secret 检查
+
+Git 中不得存在：
+
+- 真实数据库密码；
+- JWT Secret；
+- API Key；
+- `.env`；
+- 生产环境凭据。
+
+允许：
+
+```text
+${DB_PASSWORD}
+${JWT_SECRET}
+```
+
+这类环境变量引用。
+
+允许：
+
+```text
+<db-password>
+your-local-password
+your-local-secret
+```
+
+这类明显的示例占位符。
+
+### 19.11 最终验收标准
 
 全部满足以下条件才算 M0 完成：
 
 - Java 21 正确；
 - Maven Wrapper 可以独立工作；
 - 不依赖全局 Maven；
-- 后端测试通过；
+- 后端测试实际执行并通过；
+- 后端构建通过；
+- 前端 `npm ci` 通过；
 - 前端 type-check 通过；
-- 前端测试通过；
-- 前端构建通过；
-- MySQL 8 可以启动；
-- Redis 可以连接；
-- 空数据库 Flyway 自动建表；
-- 重复启动不会重复建表；
+- 前端 Vitest 测试通过；
+- 前端 production build 通过；
+- MySQL 8 可以通过 Docker Compose 启动；
+- Redis 可以通过 Docker Compose 启动；
+- Redis 连通性验证通过；
+- 空数据库 Flyway 自动执行全部 migration；
+- 重复启动不会重复执行 migration；
 - 测试不依赖开发者本机 `fitness` 数据库；
-- CI 可以正确识别成功和失败；
-- README 中的命令可以从干净 checkout 直接执行；
-- Git 中不存在真实数据库密码、JWT Secret 或其他 Secret。
+- Testcontainers 可以重复执行；
+- CI 对正常提交可以正确通过；
+- CI 对故意失败可以正确识别；
+- CI cache 不掩盖失败；
+- CI 日志不泄漏 Secret；
+- README 中的命令可以从 clean checkout 直接执行；
+- Git 中不存在真实数据库密码、JWT Secret 或其他 Secret；
+- 工作区可以保持 clean。
 
-------
+---
 
-## 18. M0 当前进度
+## 20. M0 当前进度
 
 ### T0.1 保护现有工作并建立提交基线
 
-进行中。
+**已完成。**
 
-已完成：
+完成内容：
 
-- 已备份现有工作区；
-- `.gitignore` 已补充工程基线规则；
-- 数据库密码和 JWT Secret 改为通过环境变量读取。
+- 已整理现有工作；
+- 已检查新增、修改和目录变化；
+- `.gitignore` 已覆盖工程基线；
+- 数据库密码和 JWT Secret 已改为环境变量读取；
+- 已避免提交真实 Secret；
+- 已建立语义明确的 Git 提交；
+- 当前工作区可以保持 clean。
 
-仍需：
-
-- 整理已有修改、目录移动和新增文件；
-- 建立语义明确的 Git 提交。
+---
 
 ### T0.2 Java 与 Maven 环境
 
-核心验证已完成。
+**已完成。**
 
-当前已验证：
+当前工程基线：
 
 ```text
-Java 21.0.7
+Java 21
 Apache Maven 3.9.16
 Maven Wrapper 3.3.4
+```
+
+Maven Wrapper 可以正常运行。
+
+项目不依赖全局 Maven。
+
+Linux / macOS：
+
+```bash
+./mvnw --version
+./mvnw test
 ```
 
 Windows PowerShell：
@@ -708,39 +1419,174 @@ Windows PowerShell：
 .\mvnw.cmd test
 ```
 
-Maven Wrapper 可以正常运行，不依赖机器全局 Maven。
-
-仍需：
-
-- 将 `mvnw`、`mvnw.cmd`、`.mvn/wrapper/maven-wrapper.properties` 纳入 Git；
-- 完成 T0.2 对应提交。
+---
 
 ### T0.3 前端构建基线
 
-待处理。
+**已完成。**
+
+前端目录：
+
+```text
+fitness-frontend/
+```
+
+已验证：
+
+```bash
+npm ci
+npm run type-check
+npm run test:unit -- --run
+npm run build
+```
+
+全部通过。
+
+Vitest TypeScript 配置已经恢复。
+
+没有通过删除测试配置的方式绕过问题。
+
+---
 
 ### T0.4 MySQL / Redis 本地基础设施
 
-待处理。
+**已完成。**
+
+已实现：
+
+- MySQL 8 Docker Compose 服务；
+- Redis 7 Docker Compose 服务；
+- 持久化 volume；
+- 健康检查；
+- 环境变量配置；
+- `.env.example`；
+- MySQL 本地端口 3307；
+- Redis 本地端口 6380。
+
+已验证：
+
+- MySQL 正常启动；
+- Redis 正常启动；
+- Redis `PING` 返回 `PONG`；
+- 空数据库 Flyway 可以执行全部 migration；
+- 重复启动不会重复执行 migration；
+- `docker compose down` 可停止；
+- `docker compose down -v` 可完全清理。
+
+---
 
 ### T0.5 测试配置隔离
 
-待处理。
+**已完成。**
+
+测试方案：
+
+```text
+Testcontainers + MySQL 8
+```
+
+已实现：
+
+- 独立 test profile；
+- 独立 MySQL Testcontainer；
+- datasource 动态注入；
+- Flyway 在测试数据库中执行；
+- trigger migration 支持；
+- 测试不依赖本机 `fitness`；
+- 测试可以重复运行。
+
+当前后端测试已经验证：
+
+```text
+Tests run: 1
+Failures: 0
+Errors: 0
+BUILD SUCCESS
+```
+
+并连续执行通过。
+
+---
 
 ### T0.6 CI 基线
 
-待处理。
+**已完成。**
 
-------
+CI：
 
-## 19. 当前阶段范围
+```text
+GitHub Actions
+```
 
-M0 阶段只保证：
+Workflow：
+
+```text
+.github/workflows/ci.yml
+```
+
+触发：
+
+```text
+push
+pull_request
+workflow_dispatch（可选 failure_probe）
+```
+
+后端执行：
+
+```bash
+./mvnw --batch-mode --no-transfer-progress test
+```
+
+前端执行：
+
+```bash
+npm ci
+npm run type-check
+npm run test:unit -- --run
+npm run build
+```
+
+CI 使用：
+
+- Java 21；
+- Node.js 22；
+- Maven dependency cache；
+- npm dependency cache；
+- GitHub-hosted Ubuntu runner；
+- Docker；
+- Testcontainers。
+
+CI 不依赖：
+
+- 开发者本地 Maven；
+- 开发者本地 MySQL 数据；
+- 开发者本地 Redis 数据。
+
+`failure_probe` 只在手动触发并显式启用时运行，用于验证 CI 能正确标记失败，
+不会影响正常提交和 Pull Request。
+
+---
+
+## 21. M0 完成定义
+
+当第 19 节的 clean checkout 验收全部通过后，可以正式认为：
+
+```text
+M0 完成
+```
+
+M0 提供以下工程能力：
 
 - 干净环境可安装；
 - 干净环境可构建；
 - 干净环境可测试；
 - 干净环境可启动；
-- 开发环境和 CI 行为可重复。
+- 数据库迁移可重复；
+- 测试环境可隔离；
+- CI 行为可重复；
+- 开发者无需依赖未文档化的本地状态。
 
 M0 不新增业务功能。
+
+后续业务功能开发应建立在该工程基线上。

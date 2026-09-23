@@ -3,6 +3,13 @@
 on:
   push:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      failure_probe:
+        description: "Run an intentional failing job to verify CI failure detection"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -12,6 +19,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  failure-probe:
+    name: Intentional failure probe
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.failure_probe }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail intentionally
+        run: |
+          echo "::error::Intentional CI failure probe requested"
+          exit 1
+
   backend:
     name: Backend tests
     runs-on: ubuntu-latest
