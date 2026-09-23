@@ -11,6 +11,7 @@ public record RegisterRequest(
         String email,
 
         @NotBlank(message = "密码不能为空")
+        @Size(min = 8, max = 72, message = "密码长度必须为8到72个字符")
         String password,
 
         @NotBlank(message = "确认密码不能为空")
@@ -22,8 +23,4 @@ public record RegisterRequest(
         @Size(max = 64, message = "时区长度不能超过64个字符")
         String timezone
 ) {
-
-
-
-
 }

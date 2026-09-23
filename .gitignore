@@ -53,7 +53,54 @@ Thumbs.db
 logs/
 *.tmp
 *.bak
+# IDE
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
 
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets / local env
+.env
+.env.*
+!.env.example
+application-local.yml
+application-secret.yml
+
+# Java / Maven
+target/
+**/target/
+.m2/
+*.log
+
+# Node
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+coverage/
+**/coverage/
+
+# Local database / runtime
+*.db
+*.sqlite
+*.sqlite3
+data/
+mysql-data/
+redis-data/
+
+# Temporary / exported files
+tmp/
+temp/
+exports/
+*.zip
+*.tar
+*.tar.gz
 # ==================== 其他 ====================
 # 如果你不希望把大体积的 PDF 提交到 Git，可以取消下面这行的注释
 # *.pdf

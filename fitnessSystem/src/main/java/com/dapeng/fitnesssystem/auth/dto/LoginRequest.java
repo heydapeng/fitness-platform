@@ -11,6 +11,7 @@ public record LoginRequest(
         String email,
 
         @NotBlank(message = "密码不能为空")
+        @Size(min = 8, max = 72, message = "密码长度必须为8到72个字符")
         String password
 ) {
 }
