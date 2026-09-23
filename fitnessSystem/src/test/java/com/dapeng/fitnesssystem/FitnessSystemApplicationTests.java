@@ -1,11 +1,15 @@
 package com.dapeng.fitnesssystem;
 
+import com.dapeng.fitnesssystem.support.MySqlContainerTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-class FitnessSystemApplicationTests {
+@ActiveProfiles("test")
+class FitnessSystemApplicationTests extends MySqlContainerTest {
 
-
+    @Test
+    void contextLoads() {
+    }
 }
